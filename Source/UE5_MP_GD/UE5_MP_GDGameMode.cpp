@@ -13,3 +13,16 @@ AUE5_MP_GDGameMode::AUE5_MP_GDGameMode()
 		DefaultPawnClass = PlayerPawnBPClass.Class;
 	}
 }
+
+void AUE5_MP_GDGameMode::HostLANGame()
+{
+	GetWorld()->ServerTravel("Game/ThirdPerson/Maps/ThirdPersonMap?Listen"); // adding ?Listen to the and defines this as a listen server
+}
+
+void AUE5_MP_GDGameMode::JoinLANGame()
+{
+	if(APlayerController* PlayerController = GetGameInstance()->GetFirstLocalPlayerController())
+	{
+		PlayerController->ClientTravel("192.168.2.11", TRAVEL_Absolute); // Connect to Local LAN Address of the Listen Server (in this case it's my computer)
+	}
+}

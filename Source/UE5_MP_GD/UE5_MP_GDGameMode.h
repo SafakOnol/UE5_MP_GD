@@ -13,6 +13,13 @@ class AUE5_MP_GDGameMode : public AGameModeBase
 
 public:
 	AUE5_MP_GDGameMode();
+
+	UFUNCTION(BlueprintCallable)
+	void HostLANGame();
+
+	UFUNCTION(BlueprintCallable)
+	void JoinLANGame();
+	
 };
 
 
