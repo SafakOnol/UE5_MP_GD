@@ -33,4 +33,8 @@ public:
 
 	void DecrementReplicatedVar();
 	FTimerHandle TestTimer;
+
+	// Multicast RPC
+	UFUNCTION(NetMulticast, Reliable)
+	void MulticastRPCExplode();
 };

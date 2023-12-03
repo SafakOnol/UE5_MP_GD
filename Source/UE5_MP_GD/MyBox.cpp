@@ -24,7 +24,7 @@ void AMyBox::BeginPlay()
 
 	if(HasAuthority())
 	{
-		GetWorld()->GetTimerManager().SetTimer(TestTimer, this, &AMyBox::DecrementReplicatedVar, 2.f, false);
+		GetWorld()->GetTimerManager().SetTimer(TestTimer, this, &AMyBox::MulticastRPCExplode, 2.f, false);
 	}
 	
 }
@@ -81,6 +81,19 @@ void AMyBox::DecrementReplicatedVar()
 		{
 			GetWorld()->GetTimerManager().SetTimer(TestTimer, this, &AMyBox::DecrementReplicatedVar, 2.f, false);
 		}
+	}
+}
+
+void AMyBox::MulticastRPCExplode_Implementation()
+{
+	if(HasAuthority())
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Red, TEXT("Server: MulticastRPCExplode_Implementation"));
+		GetWorld()->GetTimerManager().SetTimer(TestTimer, this, &AMyBox::MulticastRPCExplode, 2.f, false);
+	}
+	else
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Green, TEXT("Client: MulticastRPCExplode_Implementation"));
 	}
 }
 
