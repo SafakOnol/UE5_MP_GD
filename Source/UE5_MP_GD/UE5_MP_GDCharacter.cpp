@@ -10,6 +10,7 @@
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "InputActionValue.h"
+#include "Net/UnrealNetwork.h"
 
 DEFINE_LOG_CATEGORY(LogTemplateCharacter);
 
@@ -67,6 +68,15 @@ void AUE5_MP_GDCharacter::BeginPlay()
 			Subsystem->AddMappingContext(DefaultMappingContext, 0);
 		}
 	}
+}
+
+void AUE5_MP_GDCharacter::ServerRPCFunction_Implementation()
+{
+	if (HasAuthority()) // is this necessary? 
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, TEXT("Server: ServerRPCFunction_Implementation"));
+	}
+	
 }
 
 //////////////////////////////////////////////////////////////////////////
