@@ -11,6 +11,7 @@
 #include "EnhancedInputSubsystems.h"
 #include "InputActionValue.h"
 #include "Net/UnrealNetwork.h"
+#include "Engine/StaticMeshActor.h"
 
 DEFINE_LOG_CATEGORY(LogTemplateCharacter);
 
@@ -70,15 +71,6 @@ void AUE5_MP_GDCharacter::BeginPlay()
 	}
 }
 
-void AUE5_MP_GDCharacter::ServerRPCFunction_Implementation()
-{
-	if (HasAuthority()) // is this necessary? 
-	{
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, TEXT("Server: ServerRPCFunction_Implementation"));
-	}
-	
-}
-
 //////////////////////////////////////////////////////////////////////////
 // Input
 
@@ -136,5 +128,42 @@ void AUE5_MP_GDCharacter::Look(const FInputActionValue& Value)
 		// add yaw and pitch input to controller
 		AddControllerYawInput(LookAxisVector.X);
 		AddControllerPitchInput(LookAxisVector.Y);
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////
+/// VAGABOND HOBBIT
+///
+
+void AUE5_MP_GDCharacter::ServerRPCFunction_Implementation()
+{
+	if (HasAuthority()) // is this necessary? 
+	{
+#if 0
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, TEXT("Server: ServerRPCFunction_Implementation"));
+#endif
+		if(!SphereMesh)
+		{
+			return;
+		}
+		if(AStaticMeshActor* StaticMeshActor = GetWorld()->SpawnActor<AStaticMeshActor>(AStaticMeshActor::StaticClass()))
+		{
+			StaticMeshActor->SetReplicates(true);
+			StaticMeshActor->SetReplicateMovement(true);
+			StaticMeshActor->SetMobility(EComponentMobility::Movable);
+			FVector SpawnLocation = GetActorLocation() + GetActorForwardVector() * 300.f + GetActorUpVector() * 50.f;
+			StaticMeshActor->SetActorLocation(SpawnLocation);
+
+			if(UStaticMeshComponent* StaticMeshComponent = StaticMeshActor->GetStaticMeshComponent())
+			{
+				StaticMeshComponent->SetIsReplicated(true); // function name differs for component
+				StaticMeshComponent->SetSimulatePhysics(true);
+				if(SphereMesh)
+				{
+					StaticMeshComponent->SetStaticMesh(SphereMesh);
+				}
+			}
+			
+		}
 	}
 }

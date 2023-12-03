@@ -74,6 +74,9 @@ public:
 // SERVER RPC --- VagabondHobbit
 	UFUNCTION(Server, Reliable, BlueprintCallable)
 	void ServerRPCFunction();
+
+	UPROPERTY(EditAnywhere)
+	UStaticMesh* SphereMesh;
 	
 };
 
