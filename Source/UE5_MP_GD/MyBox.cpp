@@ -40,6 +40,22 @@ void AMyBox::Tick(float DeltaTime)
 		
 }
 
+void AMyBox::OnRep_ReplicatedVar()
+{
+	if(HasAuthority())
+	{
+		FVector NewLocation = GetActorLocation() + FVector(0.f, 0.f, 200.f);
+		SetActorLocation(NewLocation);
+		
+		GEngine->AddOnScreenDebugMessage(-1, 15.f, FColor::Green, TEXT("Server: OnRep_ReplicatedVar"));
+	}
+	else
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow,
+			FString::Printf(TEXT("Client %d: OnRep_ReplicatedVar"), StaticCast<int>(GPlayInEditorID)));
+	}
+}
+
 void AMyBox::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
