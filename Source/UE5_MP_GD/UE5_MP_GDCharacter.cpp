@@ -135,13 +135,16 @@ void AUE5_MP_GDCharacter::Look(const FInputActionValue& Value)
 /// VAGABOND HOBBIT
 ///
 
-void AUE5_MP_GDCharacter::ServerRPCFunction_Implementation()
+void AUE5_MP_GDCharacter::ServerRPCFunction_Implementation(int MyArg)
 {
 	if (HasAuthority()) // is this necessary? 
 	{
 #if 0
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, TEXT("Server: ServerRPCFunction_Implementation"));
 #endif
+
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green,
+			FString::Printf(TEXT("MyArg %d"), MyArg));
 		if(!SphereMesh)
 		{
 			return;
@@ -166,4 +169,14 @@ void AUE5_MP_GDCharacter::ServerRPCFunction_Implementation()
 			
 		}
 	}
+}
+
+bool AUE5_MP_GDCharacter::ServerRPCFunction_Validate(int MyArg) // Add validation to the ServerRCP if it returns false, Implementation won't be executed
+																// Additionally, if a validation returns false, the actor called the function will be dropped from the game
+{
+	if(MyArg >= 0 && MyArg <= 100)
+	{
+		return true;
+	}
+	return false;
 }

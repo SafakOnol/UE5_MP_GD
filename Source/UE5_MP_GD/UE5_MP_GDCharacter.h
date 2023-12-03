@@ -70,10 +70,10 @@ public:
 	/** Returns FollowCamera subobject **/
 	FORCEINLINE class UCameraComponent* GetFollowCamera() const { return FollowCamera; }
 
-
+////////////////////////////////////////////////////
 // SERVER RPC --- VagabondHobbit
-	UFUNCTION(Server, Reliable, BlueprintCallable)
-	void ServerRPCFunction();
+	UFUNCTION(Server, Reliable, WithValidation, BlueprintCallable)
+	void ServerRPCFunction(int MyArg);
 
 	UPROPERTY(EditAnywhere)
 	UStaticMesh* SphereMesh;
