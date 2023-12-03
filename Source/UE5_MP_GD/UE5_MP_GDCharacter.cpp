@@ -149,7 +149,10 @@ void AUE5_MP_GDCharacter::ServerRPCFunction_Implementation(int MyArg)
 		{
 			return;
 		}
-		if(AStaticMeshActor* StaticMeshActor = GetWorld()->SpawnActor<AStaticMeshActor>(AStaticMeshActor::StaticClass()))
+
+		FActorSpawnParameters SpawnParameters;
+		SpawnParameters.Owner = this;
+		if(AStaticMeshActor* StaticMeshActor = GetWorld()->SpawnActor<AStaticMeshActor>(SpawnParameters))
 		{
 			StaticMeshActor->SetReplicates(true);
 			StaticMeshActor->SetReplicateMovement(true);

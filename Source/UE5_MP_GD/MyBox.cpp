@@ -89,12 +89,12 @@ void AMyBox::MulticastRPCExplode_Implementation()
 {
 	if(HasAuthority())
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Red, TEXT("Server: MulticastRPCExplode_Implementation"));
+		//GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Red, TEXT("Server: MulticastRPCExplode_Implementation"));
 		GetWorld()->GetTimerManager().SetTimer(TestTimer, this, &AMyBox::MulticastRPCExplode, 2.f, false);
 	}
 	else
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Green, TEXT("Client: MulticastRPCExplode_Implementation"));
+		//GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Green, TEXT("Client: MulticastRPCExplode_Implementation"));
 	}
 
 	if(!IsRunningDedicatedServer()) // check if the game instance is running as dedicated server 
