@@ -16,7 +16,7 @@ AUE5_MP_GDGameMode::AUE5_MP_GDGameMode()
 
 void AUE5_MP_GDGameMode::HostLANGame()
 {
-	GetWorld()->ServerTravel("Game/ThirdPerson/Maps/ThirdPersonMap?Listen"); // adding ?Listen to the and defines this as a listen server
+	GetWorld()->ServerTravel("/Game/ThirdPerson/Maps/ThirdPersonMap?listen"); // adding ?Listen to the and defines this as a listen server
 }
 
 void AUE5_MP_GDGameMode::JoinLANGame()
