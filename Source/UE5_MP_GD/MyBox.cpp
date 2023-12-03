@@ -18,8 +18,15 @@ AMyBox::AMyBox()
 void AMyBox::BeginPlay()
 {
 	Super::BeginPlay();
+	
 	SetReplicates(true);
 	SetReplicateMovement(true);
+
+	if(HasAuthority())
+	{
+		GetWorld()->GetTimerManager().SetTimer(TestTimer, this, &AMyBox::DecrementReplicatedVar, 2.f, false);
+	}
+	
 }
 
 // Called every frame
@@ -47,7 +54,7 @@ void AMyBox::OnRep_ReplicatedVar()
 		FVector NewLocation = GetActorLocation() + FVector(0.f, 0.f, 200.f);
 		SetActorLocation(NewLocation);
 		
-		GEngine->AddOnScreenDebugMessage(-1, 15.f, FColor::Green, TEXT("Server: OnRep_ReplicatedVar"));
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, TEXT("Server: OnRep_ReplicatedVar"));
 	}
 	else
 	{
@@ -61,5 +68,19 @@ void AMyBox::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimePr
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
 	DOREPLIFETIME(AMyBox, ReplicatedVar);
+}
+
+
+void AMyBox::DecrementReplicatedVar()
+{
+	if(HasAuthority())
+	{
+		ReplicatedVar -= 1.0f;
+		OnRep_ReplicatedVar();
+		if(ReplicatedVar > 0)
+		{
+			GetWorld()->GetTimerManager().SetTimer(TestTimer, this, &AMyBox::DecrementReplicatedVar, 2.f, false);
+		}
+	}
 }
 

@@ -29,5 +29,8 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void OnRep_ReplicatedVar();
 
-	void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+
+	void DecrementReplicatedVar();
+	FTimerHandle TestTimer;
 };
