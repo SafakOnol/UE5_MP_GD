@@ -72,11 +72,21 @@ public:
 
 ////////////////////////////////////////////////////
 // SERVER RPC --- VagabondHobbit
+private:
 	UFUNCTION(Server, Reliable, WithValidation, BlueprintCallable)
 	void ServerRPCFunction(int MyArg);
 
 	UPROPERTY(EditAnywhere)
 	UStaticMesh* SphereMesh;
-	
+
+	UFUNCTION(Client, Reliable, BlueprintCallable)
+	void ClientRPCFunction();
+
+	UPROPERTY(EditAnywhere)
+	UParticleSystem* ParticleEffect;
+
+	FTimerHandle ParticleEffectTimerHandle;
+	bool bCanSpawnExplosion = true;
+	void ResetExplosionBool();
 };
 

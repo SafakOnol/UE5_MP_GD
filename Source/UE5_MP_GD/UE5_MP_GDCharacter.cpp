@@ -12,6 +12,8 @@
 #include "InputActionValue.h"
 #include "Net/UnrealNetwork.h"
 #include "Engine/StaticMeshActor.h"
+#include "Kismet/GameplayStatics.h"
+#include "Particles/ParticleSystem.h"
 
 DEFINE_LOG_CATEGORY(LogTemplateCharacter);
 
@@ -70,6 +72,7 @@ void AUE5_MP_GDCharacter::BeginPlay()
 		}
 	}
 }
+
 
 //////////////////////////////////////////////////////////////////////////
 // Input
@@ -182,4 +185,25 @@ bool AUE5_MP_GDCharacter::ServerRPCFunction_Validate(int MyArg) // Add validatio
 		return true;
 	}
 	return false;
+}
+
+void AUE5_MP_GDCharacter::ClientRPCFunction_Implementation()
+{
+	if(!ParticleEffect || !bCanSpawnExplosion)
+	{
+		return;
+	}
+	
+	FVector SpawnLocation = GetActorLocation();
+	UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ParticleEffect, SpawnLocation,
+		FRotator::ZeroRotator,true,EPSCPoolMethod::AutoRelease);
+
+	bCanSpawnExplosion = false;
+	GetWorld()->GetTimerManager().SetTimer(ParticleEffectTimerHandle, this, &AUE5_MP_GDCharacter::ResetExplosionBool, 2.f, false);
+}
+
+
+void AUE5_MP_GDCharacter::ResetExplosionBool()
+{
+	bCanSpawnExplosion = true;
 }
